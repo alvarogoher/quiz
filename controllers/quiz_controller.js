@@ -15,12 +15,35 @@ exports.load = function(req, res, next, quizId) {
 
 /* GET /quizes */
 exports.index = function(req, res) {
-  models.Quiz.findAll().then(
-    function(quizes) {
-      res.render('quizes/index', { quizes: quizes});
+    var cad = "";
+    if (req.query.search === undefined)
+    {
+        models.Quiz.findAll().then(function(quizes) {
+            res.render('quizes/index', {
+                quizes: quizes,
+                errors: []
+            });
+        }).catch(function(error) {
+            next(error);
+        });
     }
-  ).catch(function(error) { next(error);})
-};
+    else
+    {
+        cad = '%' + req.query.search + '%';
+        cad = cad.replace(/\s/g, '%');
+        models.Quiz.findAll( {
+            where: ['pregunta like ?', cad],
+            order: ['pregunta']
+        }).then(function(quizes) {
+            res.render('quizes/index', {
+                quizes: quizes,
+                errors: []
+            });
+        }).catch(function(error) {
+            next(error);
+        });
+    }
+ };
 
 /* GET /quizes/:id */
 exports.show = function(req, res) {
