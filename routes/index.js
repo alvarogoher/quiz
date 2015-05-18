@@ -18,7 +18,8 @@ router.param('quizId', quizController.load);  // autoload :quizId
 router.get('/author', function(req, res, next) {
     res.render('author', {
         name   : 'Álvaro Gómez Hernández',
-        picture: '<img src="/images/ALVARO2.gif" width="100px" alt="Álvaro Gómez">'
+        picture: '<img src="/images/ALVARO2.gif" width="100px" alt="Álvaro Gómez">',
+        errors: []
     });
 });
 
