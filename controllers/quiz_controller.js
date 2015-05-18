@@ -45,14 +45,13 @@ exports.index = function(req, res) {
     }
  };
 
-/* GET /quizes/:id */
-exports.show = function(req, res) {
-    res.render('quizes/show', { 
-        quiz: req.quiz
+ /* GET /quizes/:id */
+ exports.show = function(req, res) {
+     res.render('quizes/show', {
         quiz: req.quiz,
         errors: []
-    });
-};
+     });
+ };
 
 /* GET /quizes/:id/answer */
 exports.answer = function(req, res) {
@@ -80,16 +79,9 @@ exports.new = function(req, res) {
      });
  };
 
-/* POST /quizes/create */
-exports.create = function(req, res) {
-    var quiz = models.Quiz.build(req.body.quiz);
-
-    // guarda en DB los campos pregunta y respuesta de quiz
-    quiz.save( {
-        fields: ["pregunta", "respuesta"]
-    }).then(function() {
-        // redirección HTTP a lista de preguntas
-        res.redirect('/quizes');
+ /* POST /quizes/create */
+ exports.create = function(req, res) {
+     var quiz = models.Quiz.build(req.body.quiz);
     quiz.validate().then(function(err) {
         if (err)
         {

@@ -1,35 +1,51 @@
- <!DOCTYPE html>
- 
- <html>
- <head>
-     <meta charset="utf-8" />
-     <title>Preguntas</title>
-     <link rel='stylesheet'
-           type='text/css'
-           href='/stylesheets/style.css' />
-     <link rel='stylesheet'
-           type='text/css'
-           media='only screen and (min-width: 530px) and (min-device-width: 481px)'
-           href='/stylesheets/wide.css' />
-     <link rel='stylesheet'
-           type='text/css'
-           media='only screen and (max-width: 480px)'
-           href='/stylesheets/smartphone.css' />
- </head>
- 
- <body>
-     <div id="page-wrap">
-         <header class="main" id="h1">
-             <h2>Quiz<span>: el juego de las preguntas</span></h2>
-         </header>
- 
-         <nav class="main" id="n1" role="navigation">
-             <span><a href="/"      >Inicio</a></span>
-             <span><a href="/quizes">Preguntas</a></span>
-             <span><a href="/author">Créditos</a></span>
-         </nav>
- 
-         <section class="main" id="s1">
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Preguntas</title>
+    <link rel='stylesheet'
+          type='text/css'
+          href='/stylesheets/style.css' />
+    <link rel='stylesheet'
+          type='text/css'
+          media='only screen and (min-width: 530px) and (min-device-width: 481px)'
+          href='/stylesheets/wide.css' />
+    <link rel='stylesheet'
+          type='text/css'
+          media='only screen and (max-width: 480px)'
+          href='/stylesheets/smartphone.css' />
+</head>
+
+<body>
+    <div id="page-wrap">
+        <header class="main" id="h1">
+
+            <%
+            if(!session.user)
+            {
+            %>
+                <span class="right"><a href="/login">Login</a></span>
+            <%
+            }
+            else
+            {
+            %>
+                <span class="right">Hola <%=session.user.username%>! - <a href="/logout">Logout</a></span>
+            <%
+            }
+            %>
+
+            <h2>Quiz<span>: el juego de las preguntas</span></h2>
+        </header>
+
+        <nav class="main" id="n1" role="navigation">
+            <span><a href="/"      >Inicio</a></span>
+            <span><a href="/quizes">Preguntas</a></span>
+            <span><a href="/author">Créditos</a></span>
+        </nav>
+
+        <section class="main" id="s1">
             <% if (errors.length) { %>
                 <span id='ErrorMsgs'>
                     Corregir errores:<br/>
@@ -39,15 +55,15 @@
                 </span>
             <% } %>
 
-             <div><%- body %></div>
-         </section>
- 
-         <footer class="main" id="f1">
-             <p><a href="http://es.wikipedia.org/wiki/Quiz">
-                 ¿Que es un Quiz?</a></p>
-             <p><a href="https://github.com/mgoigfer/node.quiz-2015-v1">
-                 Página web del proyecto en GitHub</a></p>
-         </footer>
-     </div>
- </body>
- </html>
+            <div><%- body %></div>
+        </section>
+
+        <footer class="main" id="f1">
+            <p><a href="http://es.wikipedia.org/wiki/Quiz">
+                ¿Que es un Quiz?</a></p>
+            <p><a href="https://github.com/mgoigfer/node.quiz-2015-v1">
+                Página web del proyecto en GitHub</a></p>
+        </footer>
+    </div>
+</body>
+</html>
