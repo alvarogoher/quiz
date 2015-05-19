@@ -1,0 +1,12 @@
+<h2>Página de estadísticas</h2>
+
+<p>Nº de preguntas: <%= quizes %></p>
+
+<p>Nº de comentarios totales: <%= comments %></p>
+
+<p>Nº medio de comentarios por pregunta: <%= comments/quizes %></p>
+
+<% var noCommentedQuizes = quizes - commentedQuizes %>
+<p>Nº de preguntas sin comentarios: <%= noCommentedQuizes %></p>
+
+<p>Nº de preguntas con comentarios: <%= commentedQuizes %></p>
