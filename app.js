@@ -7,8 +7,6 @@ var bodyParser     = require('body-parser');
 var partials       = require('express-partials');
 var methodOverride = require('method-override');
 var session = require('express-session');
-
- 
 var routes = require('./routes/index');
 var app = express();
 
@@ -31,12 +29,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Helpers dinamicos:
 app.use(function(req, res, next) {
-
   // guardar path en session.redir para despues de login
   if (!req.path.match(/\/login|\/logout/)) {
     req.session.redir = req.path;
   }
-
   // Hacer visible req.session en las vistas
   res.locals.session = req.session;
   next();
@@ -44,58 +40,54 @@ app.use(function(req, res, next) {
 
 // auto-logout de sesión
 app.use(function(req,res,next) {
-    console.log("MW auto-logout: 'Ejecutándose'");
-    if(req.session.user) {
-        var currentTime = new Date().getTime();
-        var diferencia  = currentTime - req.session.user.tiempo;
+  console.log("MW auto-logout: 'Ejecutándose'");
+  if(req.session.user) {
+    var currentTime = new Date().getTime();
+    var diferencia  = currentTime - req.session.user.tiempo;
+        //  2min x 60seg x 1000ms = 120000ms
         if(diferencia > 120000) {
-               console.log("MW auto-logout: 'Destruyendo al usuario'");
-               var sessionController = require('./controllers/session_controller').destroy(req,res);
+          console.log("MW auto-logout: 'Destruyo al usuario'");
+          var sessionController = require('./controllers/session_controller').destroy(req,res);
         }
-        else
-        {
-            req.session.user.tiempo = currentTime;
+        else  {
+          req.session.user.tiempo = currentTime;
         }
-    }
-    next();
+  }
+  next();
 });
-
-
 
 app.use('/', routes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
 });
 
 // error handlers
-
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-    app.use(function(err, req, res, next) {
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: err,
-            errors: []
-         });
-     });
- }
+  app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: err,
+      errors: []
+    });
+  });
+}
 
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-        message: err.message,
-        error: {},
-        errors: []
-     });
- });
- 
- 
- module.exports = app;
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error: {},
+    errors: []
+  });
+});
+
+module.exports = app;

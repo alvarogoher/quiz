@@ -3,15 +3,15 @@ var models = require('../models/models.js');
 // Autoload :id de comentarios
 exports.load = function(req, res, next, commentId) {
   models.Comment.find({
-            where: {
-                id: Number(commentId)
-            }
-        }).then(function(comment) {
-      if (comment) {
-        req.comment = comment;
-        next();
-      } else{next(new Error('No existe commentId=' + commentId))}
+    where: {
+      id: Number(commentId)
     }
+  }).then(function(comment) {
+    if (comment) {
+      req.comment = comment;
+      next();
+    } else{next(new Error('No existe commentId=' + commentId))}
+  }
   ).catch(function(error){next(error)});
 };
 
@@ -23,10 +23,9 @@ exports.new = function(req, res) {
 // POST /quizes/:quizId/comments
 exports.create = function(req, res) {
   var comment = models.Comment.build(
-      { texto: req.body.comment.texto,          
-        QuizId: req.params.quizId
-        });
-
+    { texto: req.body.comment.texto,          
+      QuizId: req.params.quizId
+    });
   comment
   .validate()
   .then(
@@ -39,16 +38,13 @@ exports.create = function(req, res) {
         .then( function(){ res.redirect('/quizes/'+req.params.quizId)}) 
       }      // res.redirect: Redirección HTTP a lista de preguntas
     }
-  ).catch(function(error){next(error)});
-  
+    ).catch(function(error){next(error)});
 };
 
 // GET /quizes/:quizId/comments/:commentId/publish
 exports.publish = function(req, res) {
   req.comment.publicado = true;
-
   req.comment.save( {fields: ["publicado"]})
-    .then( function(){ res.redirect('/quizes/'+req.params.quizId);} )
-    .catch(function(error){next(error)});
-
-  }; 
+  .then( function(){ res.redirect('/quizes/'+req.params.quizId);} )
+  .catch(function(error){next(error)});
+}; 

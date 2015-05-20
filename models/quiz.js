@@ -11,4 +11,4 @@ module.exports = function(sequelize, DataTypes) {
             validate: { notEmpty: { msg: "-> Falta Respuesta"}}
         }
     });
- }
+}

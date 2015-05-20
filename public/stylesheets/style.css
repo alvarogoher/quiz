@@ -1,48 +1,71 @@
- *
- {
-     margin : 0;
-     padding: 0;
+ *  {
+    margin : 0;
+    padding: 0;
  }
- body
- {
-     font: 16px Georgia, serif;
+
+ body   {
+    font: 16px Georgia, serif;
+    background-image: url("images/fondo.png");
  }
- #page-wrap
- {
-     margin: 2% auto;
-     color : white;
- }
- #page-wrap > .main
- {
-     border       : 1px solid #999;
-     padding      : 1%;
-     margin-bottom: 1px;
-     color        : black;
- }  
- section > div
- {
-     padding: 20px;
- }
- header, nav, section
- {
-     background: #eee;
-     text-align: center;
- }
- footer
- {
-     background: #eee;
-     text-align: center;
- }
- nav span
- {
-     margin: 0px 10px 0px 0px;
- }
-#ErrorMsgs
-{
-    color    : #f61;
-    font-size: smaler;
+
+#bg{
+    position:fixed;
+    text-align: center;
+    width: 100%;
+    min-height: 100%;
+    height: 50%;
 }
 
-.right{
+ #page-wrap {
+    margin: 2% auto;
+    color : white;
+    opacity:0.8; /*Opacidad de 80%*/  
+ }
+
+ #page-wrap > .main {
+    border       : 1px solid #999;
+    padding      : 1%;
+    margin-bottom: 1px;
+    color        : black;
+    opacity:0.8; /*Opacidad de 80%*/
+ }  
+
+ section > div  {
+    padding: 20px;
+    text-align: center;
+    opacity:0.8; /*Opacidad de 80%*/
+ }
+
+ header, nav, section    {
+    background: #eee;
+    text-align: center;
+    text-align: center;
+    opacity:0.8; /*Opacidad de 80%*/
+ }
+
+ footer  {
+    background: #eee;
+    text-align: center;
+    text-align: center;
+    opacity:0.8; /*Opacidad de 80%*/
+ }
+
+ nav span   {
+    margin: 0px 10px 0px 0px;
+    opacity:0.8; /*Opacidad de 80%*/  
+ }
+
+ #ErrorMsgs  {
+    color    : #f61;
+    font-size: smaler;
+    opacity:0.8; /*Opacidad de 80%*/
+}
+
+.right {
     float: right;
-} 
+    opacity:0.8; /*Opacidad de 80%*/
+}
+
+#yo{
+    opacity:1; /*Opacidad de 100%*/
+}
