@@ -32,10 +32,17 @@ exports.load = function(req, res, next, quizId) {
 };
 
 /* GET /quizes */
+/* GET /users/:userId/quizes */
 exports.index = function(req, res) {
+    var options = {};
+    if(req.user)  {
+        options.where = {
+            UserId: req.user.id
+        }
+    }
     var cad = "";
     if (req.query.search === undefined) {
-        models.Quiz.findAll().then(function(quizes) {
+          models.Quiz.findAll(options).then(function(quizes) {
             res.render('quizes/index', {
                 quizes: quizes,
                 errors: []
@@ -48,8 +55,13 @@ exports.index = function(req, res) {
         cad = '%' + req.query.search + '%';
         cad = cad.replace(/\s/g, '%');
         models.Quiz.findAll( {
-            where: ['pregunta like ?', cad],
-            order: ['pregunta']
+            where: [
+                'pregunta like ?',
+                cadena
+            ],
+            order: [
+                'pregunta'
+            ]
         }).then(function(quizes) {
             res.render('quizes/index', {
                 quizes: quizes,

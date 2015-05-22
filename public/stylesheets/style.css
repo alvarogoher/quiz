@@ -51,7 +51,9 @@
  }
 
  nav span   {
-    margin: 0px 10px 0px 0px;
+    margin : 0px 10px 0px 0px;
+    width  : 100%;
+    display: inline-block;
     opacity:0.8; /*Opacidad de 80%*/  
  }
 
