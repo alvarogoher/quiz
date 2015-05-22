@@ -35,6 +35,10 @@ footer{
     opacity:0.8; /*Opacidad de 80%*/  
 }
 
+.quiz_img {
+    float: none;
+} 
+
 #yo{
     opacity:1; /*Opacidad de 100%*/
 }
