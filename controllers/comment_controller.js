@@ -33,7 +33,7 @@ exports.load = function(req, res, next, commentId) {
     if (comment) {
       req.comment = comment;
       next();
-    } else{next(new Error('No existe commentId=' + commentId))}
+    } else{next(new Error('No existe commentId = ' + commentId))}
   }
   ).catch(function(error){next(error)});
 };
