@@ -33,97 +33,112 @@ exports.load = function(req, res, next, quizId) {
 
 /* GET /quizes */
 /* GET /users/:userId/quizes */
-exports.index = function(req, res) {
-  var options = {};
-  if(req.user)  {
-    options.where = {
-      UserId: req.user.id
+exports.index = function(req, res, next)
+{
+    var options = {};
+    if(req.user)
+    {
+        options.where = {
+            UserId: req.user.id
+        }
     }
-  }
-  var cad = "";
-  var mark     = [];
-  var favorites = [];
-  if(req.session.user)  {
-    models.Favorite.findAll( {
-      where: {
-        UserId: Number(req.session.user.id)
-      }
-    }).then(function(f) {
-      favorites = f;
-      if(req.query.cad === undefined)  {
-        models.Quiz.findAll(options).then(function(quizes) {
-          for(j in quizes)  {
-            mark[j] = 'unchecked';
-            for(k in favorites)  {
-              if(favorites[k].QuizId === quizes[j].id) {
-                mark[j] = 'checked';
-              }
+
+    var cad     = "";
+    var mark       = [];
+    var favorites = [];
+    if(req.session.user)
+    {
+        models.Favorite.findAll( {
+            where: {
+                UserId: Number(req.session.user.id)
             }
-          }
-          res.render('quizes/index', {
-            quizes: quizes,
-            mark: mark,
-            errors: []
-          });
-        }).catch(function(error) {
-          next(error);
-        });
-      }
-      else  {
-        cad = '%'+ req.query.cad + '%';
-        cad = cad.replace(/ /g, '%');
-        models.Quiz.findAll( {
-          where: ["pregunta like ?", cad],
-          order: ['pregunta']
-        }).then(function(quizes) {
-          for(j in quizes)  {
-            mark[j] = 'unchecked';
-            for(k in favorites)  {
-              if(favorites[k].QuizId === quizes[j].id) {
-                mark[j] = 'checked';
-              }
+        }).then(function (fav) {
+            favorites = fav;
+            if(req.query.cad === undefined)
+            {
+                models.Quiz.findAll(options).then(function (quizes) {
+                    for(j in quizes)
+                    {
+                        mark[j] = 'unchecked';
+                        for(k in favorites)
+                        {
+                            if(favorites[k].QuizId === quizes[j].id)
+                            {
+                                mark[j] = 'checked';
+                            }
+                        }
+                    }
+                    res.render('quizes/index', {
+                        quizes: quizes,
+                        mark  : mark,
+                        errors: []
+                    });
+                }).catch(function (error) {
+                    next(error);
+                });
             }
-          }
-          res.render('quizes/index', {
-            quizes: quizes,
-            mark: mark,
-            errors: []
-          });
-        }).catch(function(error) {
-          next(error);
+            else
+            {
+                cad = '%' + req.query.search + '%';
+                cad = cad.replace(/\s/g, '%');
+                models.Quiz.findAll( {
+                    where: ["pregunta like ?", cad],
+                    order: ['pregunta']
+                }).then(function (quizes) {
+                    for(j in quizes)
+                    {
+                        mark[j] = 'unchecked';
+                        for(k in favorites)
+                        {
+                            if(favorites[k].QuizId === quizes[j].id)
+                            {
+                                mark[j] = 'checked';
+                            }
+                        }
+                    }
+                    res.render('quizes/index', {
+                        quizes: quizes,
+                        mark  : mark,
+                        errors: []
+                    });
+                }).catch(function (error) {
+                    next(error);
+                });
+            }
         });
-      }
-    });
-  }
-  else  {
-    if(req.query.cad === undefined)  {
-      models.Quiz.findAll(options).then(function(quizes) {
-        res.render('quizes/index', {
-          quizes: quizes,
-          mark: mark,
-          errors: []
-        });
-      }).catch(function(error) {
-        next(error);
-      });
     }
-    else  {
-      cad = '%' + req.query.cad + '%';
-      cad = cad.replace(/ /g, '%');
-      models.Quiz.findAll( {
-        where: ["pregunta like ?", cad],
-        order: ['pregunta']
-      }).then(function(quizes) {
-        res.render('quizes/index', {
-          quizes: quizes,
-          mark: mark,
-          errors: []
-        });
-      }).catch(function(error) {
-        next(error);
-      });
+    else
+    {
+        if(req.query.search === undefined)
+        {
+            models.Quiz.findAll(options).then(function (quizes) {
+                res.render('quizes/index', {
+                    quizes: quizes,
+                    mark  : mark,
+                    errors: []
+                });
+            }).catch(function (error) {
+                next(error);
+            });
+        }
+        else
+        {
+            cad = '%' + req.query.search + '%';
+            cad = cad.replace(/\s/g, '%');
+            models.Quiz.findAll( {
+                where: ["pregunta like ?", cad],
+                order: ['pregunta']
+            }).then(function (quizes) {
+                res.render('quizes/index', {
+                    quizes: quizes,
+                    mark  : mark,
+                    errors: []
+                });
+            }).catch(function (error) {
+                next(error);
+            });
+        }
     }
-  }
 };
 
 // GET /quizes/:id
