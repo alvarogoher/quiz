@@ -130,7 +130,7 @@ exports.index = function(req, res) {
 exports.show = function(req, res) {
   var mark = 'unchecked';
   if(req.session.user)  {
-    models.favorite.find( {
+    models.Favorite.find( {
       where: {
         UserId: Number(req.session.user.id),
         QuizId: Number(req.quiz.id)
