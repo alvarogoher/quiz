@@ -34,48 +34,125 @@ exports.load = function(req, res, next, quizId) {
 /* GET /quizes */
 /* GET /users/:userId/quizes */
 exports.index = function(req, res) {
-    var options = {};
-    if(req.user)  {
-        options.where = {
-            UserId: req.user.id
-        }
+  var options = {};
+  if(req.user)  {
+    options.where = {
+      UserId: req.user.id
     }
-    var cad = "";
-    if (req.query.search === undefined) {
-          models.Quiz.findAll(options).then(function(quizes) {
-            res.render('quizes/index', {
-                quizes: quizes,
-                errors: []
-            });
+  }
+  var cad = "";
+  var mark     = [];
+  var favorites = [];
+  if(req.session.user)  {
+    models.Favorite.findAll( {
+      where: {
+        UserId: Number(req.session.user.id)
+      }
+    }).then(function(f) {
+      favorites = f;
+      if(req.query.cad === undefined)  {
+        models.Quiz.findAll(options).then(function(quizes) {
+          for(j in quizes)  {
+            mark[j] = 'unchecked';
+            for(k in favorites)  {
+              if(favorites[k].QuizId === quizes[j].id) {
+                mark[j] = 'checked';
+              }
+            }
+          }
+          res.render('quizes/index', {
+            quizes: quizes,
+            mark: mark,
+            errors: []
+          });
         }).catch(function(error) {
-            next(error);
+          next(error);
         });
+      }
+      else  {
+        cad = '%'+ req.query.cad + '%';
+        cad = cad.replace(/ /g, '%');
+        models.Quiz.findAll( {
+          where: ["pregunta like ?", cad],
+          order: ['pregunta']
+        }).then(function(quizes) {
+          for(j in quizes)  {
+            mark[j] = 'unchecked';
+            for(k in favorites)  {
+              if(favorites[k].QuizId === quizes[j].id) {
+                mark[j] = 'checked';
+              }
+            }
+          }
+          res.render('quizes/index', {
+            quizes: quizes,
+            mark: mark,
+            errors: []
+          });
+        }).catch(function(error) {
+          next(error);
+        });
+      }
+    });
+  }
+  else  {
+    if(req.query.cad === undefined)  {
+      models.Quiz.findAll(options).then(function(quizes) {
+        res.render('quizes/index', {
+          quizes: quizes,
+          mark: mark,
+          errors: []
+        });
+      }).catch(function(error) {
+        next(error);
+      });
     }
     else  {
-        cad = '%' + req.query.search + '%';
-        cad = cad.replace(/\s/g, '%');
-        models.Quiz.findAll( {
-            where: [
-                'pregunta like ?',
-                cadena
-            ],
-            order: [
-                'pregunta'
-            ]
-        }).then(function(quizes) {
-            res.render('quizes/index', {
-                quizes: quizes,
-                errors: []
-            });
-        }).catch(function(error) {
-            next(error);
+      cad = '%' + req.query.cad + '%';
+      cad = cad.replace(/ /g, '%');
+      models.Quiz.findAll( {
+        where: ["pregunta like ?", cad],
+        order: ['pregunta']
+      }).then(function(quizes) {
+        res.render('quizes/index', {
+          quizes: quizes,
+          mark: mark,
+          errors: []
         });
+      }).catch(function(error) {
+        next(error);
+      });
     }
- };
+  }
+};
 
 // GET /quizes/:id
 exports.show = function(req, res) {
-   res.render('quizes/show', { quiz: req.quiz, errors: []});
+  var mark = 'unchecked';
+  if(req.session.user)  {
+    models.favorite.find( {
+      where: {
+        UserId: Number(req.session.user.id),
+        QuizId: Number(req.quiz.id)
+      }
+    }).then(function(favorite) {
+      if(favorite) {
+        mark = 'checked';
+      }
+      res.render('quizes/show', {
+        quiz: req.quiz,
+        mark: mark,
+        errors: []
+      });
+    });
+  }
+  else  {
+    res.render('quizes/show', {
+      quiz: req.quiz,
+      mark: mark,
+      errors: []
+    });
+  }
 };            // req.quiz: instancia de quiz cargada con autoload
 
 /* GET /quizes/:id/answer */

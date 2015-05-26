@@ -38,6 +38,10 @@ var Comment = sequelize.import(comment_path);
 var user_path = path.join(__dirname,'user');
 var User = sequelize.import(user_path);
 
+// Importar definición de la tabla Favorite
+var favorite_path = path.join(__dirname, 'favorite');
+var Favorite      = sequelize.import(favorite_path);
+
 Comment.belongsTo(Quiz);
 Quiz.hasMany(Comment);
 
@@ -45,10 +49,19 @@ Quiz.hasMany(Comment);
 Quiz.belongsTo(User);
 User.hasMany(Quiz);
 
-// exportar tablas
-exports.Quiz = Quiz; 
-exports.Comment = Comment; 
-exports.User = User;
+// los users pertenecen a muchos quizes y viceversa
+User.belongsToMany(Quiz, {
+    through: 'Favorite'
+});
+Quiz.belongsToMany(User, {
+    through: 'Favorite'
+});
+
+// Exportar tablas
+exports.Quiz      = Quiz;
+exports.Comment   = Comment;
+exports.User      = User;
+exports.Favorite = Favorite;
 
 // sequelize.sync() crea e inicializa tabla de preguntas en DB
 sequelize.sync().then(function() {
@@ -67,7 +80,19 @@ sequelize.sync().then(function() {
               [ {pregunta: 'Capital de Italia',   respuesta: 'Roma', UserId: 2}, // estos quizes pertenecen al usuario pepe (2)
                 {pregunta: 'Capital de Portugal', respuesta: 'Lisboa', UserId: 2}
               ]
-            ).then(function(){console.log('Base de datos (tabla quiz) inicializada')});
+            ).then(function(){console.log('Base de datos (tabla quiz) inicializada');
+            Favorite.count().then(function (count) {
+              if(count === 0) {
+              // la tabla se inicializa solo si está vacía
+                Favorite.bulkCreate([ {
+                  UserId: 1,
+                  QuizId: 3
+                }]).then(function() {
+                  console.log('Base de datos (tabla favorite) inicializada');
+                });
+              }
+            });
+          });
           };
         });
       });

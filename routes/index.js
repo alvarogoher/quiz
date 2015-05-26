@@ -6,6 +6,8 @@ var commentController    = require('../controllers/comment_controller');
 var sessionController    = require('../controllers/session_controller');
 var statisticsController = require('../controllers/statistics_controller');
 var userController = require('../controllers/user_controller');
+var favoriteController  = require('../controllers/favorite_controller');
+
 
 // Página de entrada (home page)
 router.get('/', function(req, res) {
@@ -41,6 +43,17 @@ router.get('/author', function(req, res, next) {
         errors: []
     });
 });
+
+/* Definición de rutas de favoritos */
+// ver los favoritos de un usuario
+router.get('/user/:userId(\\d+)/favorites',
+    favoriteController.show);
+router.put('/user/:userId(\\d+)/favorites/:quizId(\\d+)',
+    sessionController.loginRequired,
+    favoriteController.update);
+router.delete('/user/:userId(\\d+)/favorites/:quizId(\\d+)',
+    sessionController.loginRequired,
+    favoriteController.destroy);
 
 /* Definición de rutas de /quizes */
 router.get('/quizes',                      quizController.index);
