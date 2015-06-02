@@ -4,7 +4,10 @@
  }
 
 body { 
-    font: 16px Georgia, serif;
+}
+
+a {
+    text-decoration: none;
 }
 
  #page-wrap {
@@ -27,7 +30,6 @@ body {
  header, nav, section    {
     background: #eee;
     text-align: center;
-    text-align: center;
  }
 
  footer  {
@@ -44,9 +46,8 @@ body {
 
  #ErrorMsgs  {
     color    : #f61;
-    font-size: smaler;
+    font-size: smaller;
 }
-
 
 .right {
     float: right;
@@ -55,6 +56,10 @@ body {
 .quiz_img { 
     height: 150px; 
     float: left;
+} 
+
+.profile_img { 
+    height: 150px; 
 } 
 
 .checked    {
@@ -74,3 +79,13 @@ body {
     background-position: center center;
     background-image   : url("../images/star_gris.png");
 } 
+
+#pBienvenido{
+    font-family: "miFuente";
+    font-size: 20pt; 
+    font-style: normal; 
+    line-height: normal; 
+    font-weight: bold; 
+    color: #0066FF; 
+    text-decoration: none} 
+}

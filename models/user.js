@@ -39,6 +39,9 @@ module.exports = function(sequelize, DataTypes) {
                     this.setDataValue('password', encripted);
                 }
             },
+            image: {
+                type: DataTypes.STRING
+            },
             isAdmin: {
                 type: DataTypes.BOOLEAN,
                 defaultValue: false

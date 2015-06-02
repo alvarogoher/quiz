@@ -61,6 +61,9 @@ exports.new = function(req, res) {
 
 // POST /user
 exports.create = function(req, res) {
+    if(req.files.image){
+        req.body.user.image = req.files.image.name;
+    }
     var user = models.User.build( req.body.user );
     user
         .validate()
@@ -70,7 +73,7 @@ exports.create = function(req, res) {
                     res.render('user/new', {user: user, errors: err.errors});
                 } else {
                     user // save: guarda en DB campos username y password de user
-                    .save({fields: ["username", "password"]})
+                    .save({fields: ["username", "password", "image"]})
                     .then( function(){
                         // crea la sesión para que el usuario acceda ya autenticado y redirige a /
                         req.session.user = {id:user.id, username:user.username};
@@ -83,6 +86,9 @@ exports.create = function(req, res) {
 
 // PUT /user/:id
 exports.update = function(req, res, next) {
+    if(req.files.image) {
+        req.user.image = req.files.image.name;
+    }
     req.user.username  = req.body.user.username;
     req.user.password  = req.body.user.password;
     req.user
@@ -93,7 +99,7 @@ exports.update = function(req, res, next) {
                 res.render('user/' + req.user.id, {user: req.user, errors: err.errors});
             } else {
                 req.user     // save: guarda campo username y password en DB
-                    .save( {fields: ["username", "password"]})
+                    .save( {fields: ["username", "password", "image"]})
                     .then( function(){ res.redirect('/');});
             }     // Redirección HTTP a /
         }
@@ -107,4 +113,22 @@ exports.destroy = function(req, res) {
         delete req.session.user;
         res.redirect('/');
     }).catch(function(error){next(error)});
+};
+
+// GET /users/
+exports.users = function(req,res)   {
+    models.User.findAll().then(function (users) {
+        res.render('user/users', {
+            users : users,
+            errors: []
+        });
+    });
+};
+
+// GET /user/:id
+exports.profile = function(req,res)   {
+    res.render('user/profile', {
+        user: req.user,
+        errors: []
+    });
 };

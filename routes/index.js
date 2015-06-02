@@ -29,17 +29,18 @@ router.get('/logout', sessionController.destroy); // destruir sesión
 
 // Definición de rutas de cuenta
 router.get('/user',  userController.new);     // formulario sign un
-router.post('/user',  userController.create);     // registrar usuario
+router.post('/user',  multer({ dest: './public/media/'}), userController.create);     // registrar usuario
 router.get('/user/:userId(\\d+)/edit',  sessionController.loginRequired, userController.ownershipRequired, userController.edit);     // editar información de cuenta
-router.put('/user/:userId(\\d+)',  sessionController.loginRequired, userController.ownershipRequired, userController.update);     // actualizar información de cuenta
+router.put('/user/:userId(\\d+)',  sessionController.loginRequired, userController.ownershipRequired, multer({ dest: './public/media/'}), userController.update);     // actualizar información de cuenta
 router.delete('/user/:userId(\\d+)',  sessionController.loginRequired, userController.ownershipRequired, userController.destroy);     // borrar cuenta
- 
+router.get('/users', sessionController.loginRequired, userController.users);
+router.get('/user/:userId(\\d+)/profile', sessionController.loginRequired, userController.profile);
 
 /* GET /author */
 router.get('/author', function(req, res, next) {
     res.render('author', {
-        name   : 'Álvaro Gómez Hernández',
-        picture: '<img src="/images/ALVARO2.gif" id="yo" width="100px" alt="Álvaro Gómez Hernández">',
+        name   : 'ALVARO GOMEZ HERNANDEZ',
+        picture: '<img src="/images/ALVARO2.gif" id="yo" width="100px" alt="ALVARO GOMEZ HERNANDEZ">',
         errors: []
     });
 });

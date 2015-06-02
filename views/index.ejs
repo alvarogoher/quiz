@@ -1,2 +1,8 @@
-<h3>Estás en <%= title %></h3>
-Proyecto de Computación en Red
+<%if(!session.user)	{%>
+	<h3>Estas en <%= title %></h3>
+	Proyecto de CORE
+<%}else	{%>
+    <p id="pBienvenido"> Bienvenido <%= session.user.username %></p>
+	<h3>Estas en <%= title %></h3>
+	Proyecto de CORE
+<%}%>

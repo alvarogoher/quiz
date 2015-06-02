@@ -1,4 +1,21 @@
-body { 
+@font-face {
+    font-family: "miFuente";
+    font-style: normal;
+    font-weight: normal;
+    src: local("?"), 
+        url("/fonts/ActiJack.woff") format("woff"), 
+        url("/fonts/ActiJack.ttf") format("truetype");
+}
+
+body {
+    font-family: miFuente;
+}
+
+#radial-gradient {
+  background-size: 100%;
+  background-image: -moz-radial-gradient(90px 90px, #ff00df 80px, #1e90ff 700px);
+  background-image: -webkit-radial-gradient(90px 90px, #ff00df 80px, #1e90ff 700px);
+  background-image: radial-gradient(90px 90px, #ff00df 80px, #1e90ff 700px);
 }
 
 #page-wrap:after { content: "Wide Layout"; }
@@ -7,11 +24,12 @@ nav       {
 	float: left; 
 	width: 15%; 
 	height: 300px;
+	font-size: 15pt; 
 }
 
 nav span  { 
-	margin: 0px 100px 0px 0px;
-	text-align: center
+	margin: 0px 100px 20px 0px;
+	text-align: left;
 }
 
 section   { 
@@ -27,4 +45,14 @@ footer    {
 }
 
 #yo{
+}
+
+#pBienvenido{
+    font-family: "miFuente";
+	font-size: 20pt; 
+	font-style: normal; 
+	line-height: normal; 
+	font-weight: bold; 
+	color: #0066FF; 
+	text-decoration: none} 
 }

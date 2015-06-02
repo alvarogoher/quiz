@@ -1,0 +1,6 @@
+<%for(var i = 0; i<users.length; i++)	{%>
+    <tr>
+        <a href="/user/<%= users[i].id %>/profile"><%= users[i].username %></a>
+    </tr>
+    </br>
+<%}%>
